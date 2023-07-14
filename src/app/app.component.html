@@ -1,0 +1,80 @@
+<div class="wrapper">
+
+
+    <!-- Template-driven form -->
+    
+    <form (ngSubmit)="submit(user_template)" name="user_template" #user_template="ngForm">
+        <h2 [ngStyle]="user_template.valid ? h2_valid : h2_invalid">Template-driven form</h2>
+        <div class="form-item">
+            <label for="login">Login</label>
+            <input placeholder="Your Login..." name="login" #login="ngModel" ngModel required pattern="[a-zA-Z]+$">
+            <p *ngIf="login.invalid && login.touched && login.errors?.['required']">
+The field must not be empty
+            </p>
+            <p *ngIf="login.invalid && login.touched && login.errors?.['pattern']">
+Only latin letters without spaces are allowed
+            </p>   
+        </div>
+        <div class="form-item">
+            <label for="email">Email</label>
+            <input id="email" placeholder="Your email..." name="email" #email="ngModel" ngModel required pattern="[\w-]+(\.[\w-]+)*@([\w-]+\.)+[\w-]{2,}$" uniqEmail>
+            <p *ngIf="email.invalid && email.touched && email.errors?.['required']">
+The field must not be empty
+            </p>
+            <p *ngIf="email.invalid && email.touched && email.errors?.['pattern']">
+E-mail incorrect
+            </p>
+        </div>
+        <div class="form-item">
+            <label for="password">Password</label>
+            <input id="password" placeholder="Your password..." name="password" #password="ngModel" ngModel required minlength="7">
+            <p *ngIf="password.touched && password.invalid && password.errors?.['required']">
+The field must not be empty
+            </p>
+            <p *ngIf="password.touched && password.invalid && password.errors?.['minlength']">
+Must be not less than 7 characters! For the moment you entred {{password.value.length}} characters</p> 
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+
+
+    <!-- Reactive form -->
+
+    <form [formGroup]="form" (ngSubmit)="submitReactive()">
+        <h2 [ngStyle]="form.valid ? h2_r_valid : h2_r_invalid">Reactive form</h2>
+        <div class="form-item">
+            <label for="login">Login</label>
+            <input placeholder="Your Login..." id="login" formControlName="login">
+            <p *ngIf="form.get('login')?.['invalid'] && form.get('login')?.['touched'] && form.get('login')?.['errors']?.['required']">
+The field must not be empty
+            </p>
+            <p *ngIf="form.get('login')?.['invalid'] && form.get('login')?.['touched'] && form.get('login')?.['errors']?.['pattern']">
+Only latin letters without spaces are allowed
+            </p>
+        </div>
+        <div class="form-item">
+            <label for="email">Email</label>
+            <input id="email" placeholder="Your email..." id="email" formControlName="email">
+            <p *ngIf="form.get('email')?.['invalid'] && form.get('email')?.['touched'] && form.get('email')?.['errors']?.['required']">
+The field must not be empty
+            </p>
+            <p *ngIf="form.get('email')?.['invalid'] && form.get('email')?.['touched'] && form.get('email')?.['errors']?.['email']">
+E-mail incorrect
+            </p>
+            <p *ngIf="form.get('email')?.['invalid'] && form.get('email')?.['touched'] && form.get('email')?.['errors']?.['uniqEmail']">
+This email address already exists
+            </p>
+        </div>
+        <div class="form-item">
+            <label for="password">Password</label>
+            <input id="password" placeholder="Your password..." id="password" formControlName="password">
+            <p *ngIf="form.get('password')?.['invalid'] && form.get('password')?.['touched'] && form.get('password')?.['errors']?.['required']">
+The field must not be empty
+            </p>
+            <p *ngIf="form.get('password')?.['invalid'] && form.get('password')?.['touched'] && form.get('password')?.['errors']?.['minlength']">
+Must be not less than 7 characters! For the moment you entred {{form.get('password')?.value.length}} characters
+            </p>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
